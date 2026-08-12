@@ -35,7 +35,7 @@
             display: block;
         }
 
-        /* Container for the vertical stack of custom image icons */
+        /* Container for the vertical stack of links */
         .icon-stack {
             width: 100%;
             max-width: 400px;
@@ -43,31 +43,57 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 45px; /* Spacing between your icons */
+            gap: 45px; /* Spacing between rows */
         }
 
-        /* Style for the clickable icon image wrapper */
-        .icon-link {
+        /* The row structure containing icon + text */
+        .social-row {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Initially centered */
+            width: 100%;
             text-decoration: none;
-            transition: transform 0.25s ease, filter 0.25s ease;
-            display: inline-block;
+            transition: transform 0.25s ease;
+        }
+        
+        /* Subtle pop animation on hover */
+        .social-row:hover {
+            transform: scale(1.05);
         }
 
         /* Custom image dimension constraints */
         .custom-icon {
-            width: 55px;  /* Clean size for readability */
+            width: 55px;
             height: auto;
             display: block;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Hover action: smooth scaling bounce */
-        .icon-link:hover {
-            transform: scale(1.15);
+        /* Clean dark-themed text formatting */
+        .social-text {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #444444; /* Dark grayish-matte tone that is readable but matches the dark theme */
+            margin-left: 0;
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: opacity 0.8s ease 0.2s, margin-left 0.6s cubic-bezier(0.25, 1, 0.5, 1), width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        
-        /* Adds a neat dark aesthetic brightness pop when hovered */
-        .icon-link:active {
-            transform: scale(0.95);
+
+        /* Trigger state when the user clicks the page */
+        body.activated .social-row {
+            justify-content: flex-start; /* Shifts content alignment to the left side */
+            padding-left: 90px;          /* Perfectly centers the newly expanded row block */
+        }
+
+        body.activated .social-text {
+            width: 150px;       /* Gives room for text to expand into */
+            margin-left: 20px;  /* Spacing between the icon and text */
+            opacity: 1;         /* Fades the words seamlessly into view */
         }
 
         audio {
@@ -82,22 +108,25 @@
         <img src="ChatGPT%20Image%20Aug%2012,%202026,%2003_37_01%20AM.png" alt="Neo Banner" class="banner-img">
     </div>
 
-    <!-- Clickable Custom Image Icons Stack -->
+    <!-- Clickable Custom Image Rows -->
     <div class="icon-stack">
 
-        <!-- DISCORD LINK -->
-        <a href="#" target="_blank" class="icon-link" title="Discord">
+        <!-- DISCORD BLOCK -->
+        <a href="#" target="_blank" class="social-row" title="Discord">
             <img src="image-removebg-preview.png" alt="Discord" class="custom-icon">
+            <span class="social-text">Discord</span>
         </a>
 
-        <!-- INSTAGRAM LINK -->
-        <a href="#" target="_blank" class="icon-link" title="Instagram">
+        <!-- INSTAGRAM BLOCK -->
+        <a href="#" target="_blank" class="social-row" title="Instagram">
             <img src="image-removebg-preview%20(1).png" alt="Instagram" class="custom-icon">
+            <span class="social-text">Instagram</span>
         </a>
 
-        <!-- ROBLOX LINK -->
-        <a href="#" target="_blank" class="icon-link" title="Roblox">
+        <!-- ROBLOX BLOCK -->
+        <a href="#" target="_blank" class="social-row" title="Roblox">
             <img src="image-removebg-preview%20(2).png" alt="Roblox" class="custom-icon">
+            <span class="social-text">Roblox</span>
         </a>
 
     </div>
@@ -109,15 +138,32 @@
 
     <script>
         const audio = document.getElementById('bg-audio');
-        audio.play().catch(() => {
-            console.log("Autoplay blocked. Awaiting screen click.");
-        });
-        document.body.addEventListener('click', () => {
+        const body = document.body;
+
+        // Central activation function for audio and animations
+        function activatePage() {
+            // Adds the CSS activation class to kick off the sliding/fading styles
+            if (!body.classList.contains('activated')) {
+                body.classList.add('activated');
+            }
+            
+            // Fires up the music track smoothly
             if (audio.paused) {
                 audio.play();
             }
+        }
+
+        // Standard auto-load check
+        audio.play().then(() => {
+            body.classList.add('activated');
+        }).catch(() => {
+            console.log("Autoplay blocked. Waiting for visitor click.");
         });
+
+        // Triggers the animation state structural shift when clicking anywhere
+        body.addEventListener('click', activatePage);
     </script>
 
 </body>
 </html>
+
