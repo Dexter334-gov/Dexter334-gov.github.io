@@ -22,7 +22,7 @@
             position: relative;
         }
 
-        /* STATIC GRIT / TEXTURE OVERLAY */
+        /* STATIC GRIT BACKGROUND TEXTURE */
         body::before {
             content: "";
             position: fixed;
@@ -38,7 +38,7 @@
             pointer-events: none;
         }
         
-        /* Master layout boundaries */
+        /* Layout Boundary Container */
         .main-layout {
             width: 100%;
             max-width: 800px;
@@ -50,30 +50,29 @@
             min-height: 85vh;
         }
 
-        /* Hard locks navigation links to the left side wall */
+        /* Navigation links stack panel mapping */
         .icon-stack {
             display: flex;
             flex-direction: column;
             gap: 45px;
             width: 100%;
-            align-items: flex-start;
         }
 
-        /* Clicking the row will slide it smoothly left to right */
+        /* Center start configuration layout profiles */
         .social-row {
             display: flex;
             align-items: center;
-            justify-content: center; /* Initially centered */
+            justify-content: center;
             width: 100%;
             text-decoration: none;
-            transition: transform 0.25s ease;
+            transition: transform 0.2s ease;
         }
         
         .social-row:hover {
             transform: scale(1.05);
         }
 
-        /* HARDTEKK SPIN LINK ANIMATION IMPLEMENTATION */
+        /* Spin transition metrics rules */
         .custom-icon {
             width: 55px;
             height: auto;
@@ -81,11 +80,11 @@
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Spinning animation toggle class handled by event routing */
         .social-row.clicked-spinning .custom-icon {
             transform: rotate(360deg) scale(1.2);
         }
 
+        /* Matte gray text hidden parameters layout */
         .social-text {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             font-size: 20px;
@@ -100,9 +99,9 @@
             transition: opacity 0.6s ease 0.2s, margin-left 0.5s cubic-bezier(0.25, 1, 0.5, 1), width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* ON REVEAL FLIGHT EFFECTS: Locks items all the way to the far left wall */
+        /* FLY OUT TO LEFT ACTIVATION INTERACTION: Forces content to left wall margins */
         body.activated .social-row {
-            justify-content: flex-start;
+            justify-content: flex-start !important;
         }
 
         body.activated .social-text {
@@ -116,7 +115,7 @@
             text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
         }
 
-        /* NATIVE EQUALIZER FREQUENCY LAYOUT FOOTPRINT */
+        /* EQUALIZER STACK HOOKS CONTAINER FOOTPRINT */
         .visualizer-wrapper {
             width: 100%;
             height: 60px;
@@ -147,28 +146,28 @@
 
     <div class="main-layout">
 
-        <!-- Left aligned content blocks stacking zone -->
+        <!-- Social link content section stack area -->
         <div class="icon-stack">
-            <!-- DISCORD BUTTON -->
+            <!-- DISCORD -->
             <div class="social-row" id="discord-btn" title="Click to copy username">
                 <img src="image-removebg-preview.png" alt="Discord" class="custom-icon">
                 <span class="social-text" id="discord-text">Discord</span>
             </div>
 
-            <!-- INSTAGRAM REDIRECT LINK -->
+            <!-- INSTAGRAM -->
             <div class="social-row" id="insta-btn" title="Instagram">
                 <img src="image-removebg-preview%20(1).png" alt="Instagram" class="custom-icon">
                 <span class="social-text">Instagram</span>
             </div>
 
-            <!-- ROBLOX REDIRECT LINK -->
+            <!-- ROBLOX -->
             <div class="social-row" id="roblox-btn" title="Roblox">
                 <img src="image-removebg-preview%20(2).png" alt="Roblox" class="custom-icon">
                 <span class="social-text">Roblox</span>
             </div>
         </div>
 
-        <!-- High frequency audio response nodes (24 spectrum analyzer bars) -->
+        <!-- Audio Frequency wave visual bars nodes spectrum layout -->
         <div class="visualizer-wrapper" id="visualizer-wave">
             <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
             <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
@@ -179,6 +178,7 @@
 
     </div>
 
+    <!-- Hidden audio tracking track component player element -->
     <audio id="bg-audio" autoplay loop>
         <source src="ACIDTEKK%20(Slowed).mp3" type="audio/mpeg">
     </audio>
@@ -200,19 +200,18 @@
             }
         }
 
-        // High precision 160BPM Hardtekk processing equalizer script logic
+        // Hardtekk high-intensity dynamic beat sync tracking engine loop script logic
         let visInterval;
         function startHardtekkVisualizerLoop() {
             if (visInterval) return;
             visInterval = setInterval(() => {
                 if (!audio.paused) {
                     waveBars.forEach((bar, index) => {
-                        // Simulates high intensity speed kicks synchronized to rhythmic timing scales
                         let timeScale = Date.now() * 0.015;
                         let baseBass = Math.sin(timeScale + index * 0.5) * 15;
                         
-                        // Hard sub bass transient thump emulation
-                        let hardtekkKick = (Math.sin(timeScale * 1.5) > 0.6) ? Math.floor(Math.random() * 38) + 10 : 0;
+                        // Hard warehouse kick transient beat wave spike triggers
+                        let hardtekkKick = (Math.sin(timeScale * 1.5) > 0.6) ? Math.floor(Math.random() * 38) + 12 : 0;
                         
                         let targetHeight = Math.max(3, Math.abs(baseBass) + hardtekkKick);
                         bar.style.height = `${targetHeight}px`;
@@ -220,21 +219,22 @@
                 } else {
                     waveBars.forEach(bar => bar.style.height = '3px');
                 }
-            }, 65); // Hyper responsive updating frame speed metric
+            }, 65);
         }
 
+        // Check auto initialization parameter parameters safely
         audio.play().then(() => {
             body.classList.add('activated');
             startHardtekkVisualizerLoop();
         }).catch(() => {
-            console.log("Awaiting system interaction parameter validation checks.");
+            console.log("Interaction check pipeline holding active engine context components.");
         });
 
         body.addEventListener('click', activatePage);
 
-        // NAVIGATION BUTTON ACTIONS TIMELINE MANAGEMENT
+        // BUTTON CLICK NAVIGATION TIMELINE ROUTING ACTIONS
 
-        // DISCORD BUTTON EVENTS
+        // DISCORD COPY
         const discordBtn = document.getElementById('discord-btn');
         const discordText = document.getElementById('discord-text');
 
@@ -257,7 +257,7 @@
             }, 2000);
         });
 
-        // INSTAGRAM BUTTON TIMEOUT ROUTING
+        // INSTAGRAM ROUTER
         const instaBtn = document.getElementById('insta-btn');
         instaBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -265,17 +265,25 @@
             
             instaBtn.classList.add('clicked-spinning');
             
-            // Pauses processing workflow briefly so the visitor physically watches the icon rotate completely
             setTimeout(() => {
                 instaBtn.classList.remove('clicked-spinning');
                 window.open("https://instagram.com", "_blank");
             }, 600);
         });
 
-        // ROBLOX BUTTON TIMEOUT ROUTING
+        // ROBLOX ROUTER
         const robloxBtn = document.getElementById('roblox-btn');
         robloxBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             activatePage();
             
-
+            robloxBtn.classList.add('clicked-spinning');
+            
+            setTimeout(() => {
+                robloxBtn.classList.remove('clicked-spinning');
+                window.open("https://roblox.com", "_blank");
+            }, 600);
+        });
+    </script>
+</body>
+</html>
