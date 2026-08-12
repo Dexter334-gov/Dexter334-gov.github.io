@@ -5,14 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dexter334-gov</title>
     <style>
-        /* Makes the entire page completely blank white */
-        body {
-            background-color: #ffffff;
+        /* Resets all default browser margins */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #ffffff;
             width: 100vw;
-            height: 100vh;
-            cursor: pointer; /* Changes mouse to a pointer so users know to click */
+            min-height: 100vh;
+            cursor: pointer; /* Keeps the click cue active */
+            overflow-x: hidden; /* Prevents unwanted sideways scrolling */
+        }
+        /* Style for your top banner image */
+        .banner-img {
+            width: 100%;       /* Forces it to touch left and right borders */
+            height: 250px;     /* Set height - change this number to make it taller/shorter */
+            object-fit: cover; /* Prevents distorting/stretching the photo details */
+            display: block;    /* Removes default bottom gaps */
         }
         /* Completely hides the visual audio player box from the screen */
         audio {
@@ -21,6 +32,9 @@
     </style>
 </head>
 <body>
+
+    <!-- Your Banner Image at the top -->
+    <img src="images%20(2).jpeg" alt="Banner" class="banner-img">
 
     <!-- Hidden Audio File -->
     <audio id="bg-audio" autoplay loop>
@@ -35,7 +49,7 @@
             console.log("Browser blocked autoplay. Waiting for user to click the screen.");
         });
 
-        // The moment the user clicks anywhere on the white screen, force the music to play
+        // The moment the user clicks anywhere on the screen, force the music to play
         document.body.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
