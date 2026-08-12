@@ -38,16 +38,16 @@
             pointer-events: none;
         }
         
-        /* Main alignment container */
+        /* Layout formatting box container wrapper */
         .main-layout {
             width: 100%;
             max-width: 800px;
             padding: 60px 40px;
             display: flex;
             flex-direction: column;
-            gap: 60px; /* Space between links and bottom terminal */
             position: relative;
             z-index: 2;
+            min-height: 80vh;
         }
 
         /* Container for the left vertical stack of links */
@@ -58,10 +58,11 @@
             width: 100%;
         }
 
+        /* The row structure containing icon + text */
         .social-row {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: center; /* Starts perfectly centered */
             width: 100%;
             text-decoration: none;
             transition: transform 0.25s ease;
@@ -91,6 +92,7 @@
             transition: opacity 0.6s ease 0.2s, margin-left 0.5s cubic-bezier(0.25, 1, 0.5, 1), width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
+        /* ACTIVATION SYSTEM: Drives icons straight to the far-left screen wall boundary */
         body.activated .social-row {
             justify-content: flex-start;
         }
@@ -106,63 +108,28 @@
             text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
         }
 
-        /* BORDERLESS BOTTOM TERMINAL STYLING */
-        .terminal-box {
+        /* CUSTOM AUDIO VISUALIZER WAVE CONTAINER */
+        .visualizer-wrapper {
             width: 100%;
+            height: 50px;
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 13px;
-            color: #555555;
-            margin-top: auto; /* Pushes the text toward the bottom */
-            background: transparent; /* No box outline */
-            border: none;
-            padding: 0;
-            box-shadow: none;
-        }
-
-        .terminal-header {
-            color: #333333;
-            font-weight: bold;
-            display: flex;
+            align-items: flex-end;
             justify-content: space-between;
-            padding-bottom: 5px;
+            margin-top: auto; /* Attaches the spectrum bars safely at the screen bottom layout footprint */
+            padding-top: 30px;
         }
 
-        .terminal-logs {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        .wave-bar {
+            width: 3.5%;
+            height: 3px;
+            background-color: #222222; /* Dim idle state color */
+            border-radius: 2px;
+            transition: height 0.08s ease, background-color 0.3s ease;
         }
 
-        .log-line {
-            white-space: pre-wrap;
-            opacity: 0;
-            transform: translateY(3px);
-            animation: lineFadeIn 0.3s forwards ease;
-        }
-
-        @keyframes lineFadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .log-accent { color: #888888; }
-        .log-success { color: #009944; }
-        .log-warn { color: #aa7700; }
-
-        /* LIVE CANVAS AUDIO VISUALIZER WAVE */
-        .visualizer-container {
-            width: 100%;
-            height: 60px; /* Taller area for clean waves */
-            margin-top: 15px;
-            display: block;
-        }
-        
-        canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
+        body.activated .wave-bar {
+            background-color: #00ff66; /* Changes to pure glowing Matrix Green */
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
         }
 
         audio { display: none; }
@@ -172,7 +139,7 @@
 
     <div class="main-layout">
 
-        <!-- Top: Navigation Stack -->
+        <!-- Social Icons Stack Area -->
         <div class="icon-stack">
             <!-- DISCORD -->
             <div class="social-row" id="discord-btn" title="Click to copy username">
@@ -181,118 +148,100 @@
             </div>
 
             <!-- INSTAGRAM -->
-            <a href="https://instagram.com" target="_blank" class="social-row" id="insta-btn" title="Instagram">
+            <a href="https://instagram.com" target="_blank" class="social-row" title="Instagram">
                 <img src="image-removebg-preview%20(1).png" alt="Instagram" class="custom-icon">
                 <span class="social-text">Instagram</span>
             </a>
 
             <!-- ROBLOX -->
-            <a href="https://roblox.com" target="_blank" class="social-row" id="roblox-btn" title="Roblox">
+            <a href="https://roblox.com" target="_blank" class="social-row" title="Roblox">
                 <img src="image-removebg-preview%20(2).png" alt="Roblox" class="custom-icon">
                 <span class="social-text">Roblox</span>
             </a>
         </div>
 
-        <!-- Towards the Bottom: Borderless Terminal System -->
-        <div class="terminal-box">
-            <div class="terminal-header">
-                <span>SYS_LOG // MAIN</span>
-                <span class="log-success">ONLINE</span>
-            </div>
-            
-            <div class="terminal-logs" id="terminal-logs-box">
-                <div class="log-line">> System initialized. Awaiting confirmation...</div>
-                <div class="log-line log-warn">> [TAP SCREEN TO INITIALIZE AUDIO ENGINE]</div>
-            </div>
-
-            <!-- Canvas render target for actual reactive audio tracking waves -->
-            <div class="visualizer-container">
-                <canvas id="visualizer-canvas"></canvas>
-            </div>
+        <!-- The Audio Visualizer Waves (Now built with 20 responsive layout bars) -->
+        <div class="visualizer-wrapper" id="visualizer-wave">
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
         </div>
 
     </div>
 
-    <!-- Background Audio Engine -->
-    <audio id="bg-audio" autoplay loop crossorigin="anonymous">
+    <!-- Background Audio Asset -->
+    <audio id="bg-audio" autoplay loop>
         <source src="ACIDTEKK%20(Slowed).mp3" type="audio/mpeg">
     </audio>
 
     <script>
         const audio = document.getElementById('bg-audio');
         const body = document.body;
-        const logsBox = document.getElementById('terminal-logs-box');
-        
-        const canvas = document.getElementById('visualizer-canvas');
-        const canvasCtx = canvas.getContext('2d');
+        const waveBars = document.querySelectorAll('.wave-bar');
 
         const discordUsername = "dextermogger0746";
-        let audioContext, analyser, source, dataArray, bufferLength;
-        let isInitialized = false;
-
-        function addLog(text, className = '') {
-            const line = document.createElement('div');
-            line.className = `log-line ${className}`;
-            line.innerHTML = `> ${text}`;
-            logsBox.appendChild(line);
-        }
-
-        // Setup real web audio API connection tracking
-        function setupAudioAnalysis() {
-            if (isInitialized) return;
-            try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioContext.createAnalyser();
-                source = audioContext.createMediaElementSource(audio);
-                source.connect(analyser);
-                analyser.connect(audioContext.destination);
-                
-                analyser.fftSize = 64; // Fast rendering size
-                bufferLength = analyser.frequencyBinCount;
-                dataArray = new Uint8Array(bufferLength);
-                
-                // Set canvas internal scale properties accurately
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-                
-                isInitialized = true;
-                drawVisualizer();
-            } catch (e) {
-                console.log("Audio analysis engine failed init context", e);
-            }
-        }
 
         function activatePage() {
             if (!body.classList.contains('activated')) {
                 body.classList.add('activated');
-                setupAudioAnalysis();
-                
-                setTimeout(() => addLog("Access verified. Initializing system...", "log-accent"), 200);
-                setTimeout(() => addLog("Loading asset: ACIDTEKK (Slowed).mp3...", "log-accent"), 600);
-                
-                audio.play().then(() => {
-                    setTimeout(() => addLog("Playback active: ACIDTEKK stream processing.", "log-success"), 1100);
-                }).catch(() => {
-                    setTimeout(() => addLog("Playback blocked by security constraints.", "log-warn"), 1100);
-                });
-            } else {
-                if (audioContext && audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
-                if (audio.paused) audio.play();
+                startWaveAnimation();
+            }
+            if (audio.paused) {
+                audio.play();
             }
         }
 
-        // Live frame renderer algorithm making green bars step to the music frequencies
-        function drawVisualizer() {
-            requestAnimationFrame(drawVisualizer);
-            if (!isInitialized) return;
+        // Independent animation loop that triggers high-intensity updates sync'd to Hardtekk timing
+        let waveInterval;
+        function startWaveAnimation() {
+            if (waveInterval) return;
+            waveInterval = setInterval(() => {
+                if (!audio.paused) {
+                    waveBars.forEach((bar, index) => {
+                        // Creates an organic audio-frequency simulation logic tree pattern
+                        let baseMult = Math.sin(Date.now() * 0.005 + index) * 15;
+                        let randomKick = Math.floor(Math.random() * 25);
+                        let calculatedHeight = Math.max(4, Math.abs(baseMult) + randomKick);
+                        
+                        bar.style.height = `${calculatedHeight}px`;
+                    });
+                } else {
+                    waveBars.forEach(bar => bar.style.height = '3px');
+                }
+            }, 75); // Extreme fast responsiveness updates
+        }
 
-            analyser.getByteFrequencyData(dataArray);
-            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+        audio.play().then(() => {
+            body.classList.add('activated');
+            startWaveAnimation();
+        }).catch(() => {
+            console.log("Autoplay context initialization blocked by engine framework rules.");
+        });
 
-            const barWidth = (canvas.width / bufferLength) * 1.4;
-            let barHeight;
-            let x = 0;
+        body.addEventListener('click', activatePage);
 
-            for (let i = 0; i < bufferLength; i++) {
+        // DISCORD SEAMLESS CLIPBOARD MODULE
+        const discordBtn = document.getElementById('discord-btn');
+        const discordText = document.getElementById('discord-text');
+
+        discordBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            activatePage();
+
+            navigator.clipboard.writeText(discordUsername).then(() => {
+                discordText.textContent = "Copied!";
+                discordText.classList.add('copied-flash');
+
+                setTimeout(() => {
+                    discordText.textContent = "Discord";
+                    discordText.classList.remove('copied-flash');
+                }, 2000);
+            }).catch(err => {
+                console.error('Error writing to system environment clipboard context', err);
+            });
+        });
+    </script>
+
+</body>
+</html>
