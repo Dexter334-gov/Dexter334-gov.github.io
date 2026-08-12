@@ -22,56 +22,26 @@
             position: relative;
         }
 
-        /* HARDTEKK DISTORTION OVERLAY */
+        /* STATIC GRIT / TEXTURE OVERLAY (No moving waves) */
         body::before {
             content: "";
             position: fixed;
-            top: -50px;
-            left: -50px;
-            right: -50px;
-            bottom: -50px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background-image: url('Airbrush-IMAGE-ENHANCER-1786522159771-1786522159771.jpg');
             background-size: cover;
             background-position: center;
-            opacity: 0.12; /* Muted texture depth so it stays dark and gritty */
+            opacity: 0.15; /* Fixed gritty distortion print */
             z-index: 1;
             pointer-events: none;
         }
-
-        /* Glitch distortion loop animation triggered on page click */
-        body.activated::before {
-            animation: tekkGlitch 0.25s infinite linear;
-        }
-
-        @keyframes tekkGlitch {
-            0% { transform: translate(0, 0) skewX(0deg); filter: contrast(100%); }
-            20% { transform: translate(-5px, 3px) skewX(2deg); filter: contrast(150%); }
-            40% { transform: translate(4px, -2px) skewX(-1deg); }
-            60% { transform: translate(-3px, -4px) opacity: 0.18; }
-            80% { transform: translate(5px, 5px) skewX(1deg); filter: contrast(120%); }
-            100% { transform: translate(0, 0) skewX(0deg); }
-        }
         
-        /* Top Header Banner styling */
-        .banner-container {
-            width: 100%;
-            display: flex;
-            justify-content: center; 
-            background-color: #000000;
-            position: relative;
-            z-index: 2;
-        }
-        .banner-img {
-            width: 100%;
-            max-width: 800px;
-            height: auto;
-            display: block;
-        }
-
         /* Container spanning the entire width of the page */
         .icon-stack {
             width: 100%;
-            padding: 50px 40px;
+            padding: 60px 40px; /* Controls how high the items sit from the top edge */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -86,7 +56,7 @@
             align-items: center;
             justify-content: center; /* Starts perfectly centered */
             width: 100%;
-            max-width: 800px; /* Aligns comfortably with the Neo banner borders */
+            max-width: 800px; 
             text-decoration: none;
             transition: transform 0.25s ease, justify-content 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
@@ -135,12 +105,7 @@
 </head>
 <body>
 
-    <!-- Top Header Banner -->
-    <div class="banner-container">
-        <img src="ChatGPT%20Image%20Aug%2012,%202026,%2003_37_01%20AM.png" alt="Neo Banner" class="banner-img">
-    </div>
-
-    <!-- Clickable Custom Image Rows -->
+    <!-- Clickable Custom Image Rows (No top banner) -->
     <div class="icon-stack">
 
         <!-- DISCORD BLOCK -->
@@ -192,5 +157,3 @@
 
 </body>
 </html>
-
-
