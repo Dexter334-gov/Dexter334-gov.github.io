@@ -12,13 +12,18 @@
         }
         body {
             background-color: #000000; /* Pitch black matches the banner perfectly */
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             width: 100vw;
             min-height: 100vh;
             cursor: pointer;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
-        /* Container that keeps the image perfectly centered */
+        /* Container that fixes the image safely at the top */
         .banner-container {
             width: 100%;
             display: flex;
@@ -28,9 +33,59 @@
 
         .banner-img {
             width: 100%;
-            max-width: 1200px; /* Prevents it from scaling up too large and losing quality */
+            max-width: 800px;  /* Keeps the image slightly smaller so links fit beautifully below */
             height: auto;       /* Keeps original crisp proportions */
             display: block;
+        }
+
+        /* Content area below Neo */
+        .content-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+            margin-top: -10px; /* Seamlessly pulls content close to the image wrap */
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 6px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        p {
+            font-size: 14px;
+            color: #888888;
+            margin-bottom: 25px;
+        }
+
+        /* Modern, minimal social button stack */
+        .links-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-button {
+            display: block;
+            padding: 14px;
+            background: #111111;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            border: 1px solid #222222;
+            transition: all 0.2s ease;
+        }
+
+        /* Interactive highlight effect when hovering or tapping buttons */
+        .social-button:hover {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            transform: translateY(-2px);
         }
 
         audio {
@@ -40,9 +95,24 @@
 </head>
 <body>
 
-    <!-- Center-aligned banner with the exact updated file path -->
+    <!-- Top Header Banner -->
     <div class="banner-container">
         <img src="ChatGPT%20Image%20Aug%2012,%202026,%2003_37_01%20AM.png" alt="Neo Banner" class="banner-img">
+    </div>
+
+    <!-- Main Content Underneath the Image -->
+    <div class="content-container">
+        <h1>@Dexter334-gov</h1>
+        <p>Click anywhere to activate audio track</p>
+        
+        <!-- Social Profiles Box -->
+        <div class="links-stack">
+            <!-- CHANGE THE LINKS BELOW TO YOUR REAL PROFILE PATHS -->
+            <a href="https://instagram.com" target="_blank" class="social-button">Instagram</a>
+            <a href="https://discord.com" target="_blank" class="social-button">Discord</a>
+            <a href="https://tiktok.com" target="_blank" class="social-button">TikTok</a>
+            <a href="https://youtube.com" target="_blank" class="social-button">YouTube</a>
+        </div>
     </div>
 
     <!-- Hidden Audio File -->
@@ -66,4 +136,3 @@
 
 </body>
 </html>
-
