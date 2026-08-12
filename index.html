@@ -38,16 +38,14 @@
             pointer-events: none;
         }
         
-        /* Master responsive grid layout split across desktop screens */
+        /* Main alignment container */
         .main-layout {
             width: 100%;
-            max-width: 1000px;
+            max-width: 800px;
             padding: 60px 40px;
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 40px;
+            flex-direction: column;
+            gap: 60px; /* Space between links and bottom terminal */
             position: relative;
             z-index: 2;
         }
@@ -57,7 +55,7 @@
             display: flex;
             flex-direction: column;
             gap: 45px;
-            flex: 1;
+            width: 100%;
         }
 
         .social-row {
@@ -108,47 +106,40 @@
             text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
         }
 
-        /* CYBER TERMINAL INTERACTIVE BOX STYLING */
+        /* BORDERLESS BOTTOM TERMINAL STYLING */
         .terminal-box {
-            flex: 1.2;
             width: 100%;
-            max-width: 480px;
-            background: rgba(10, 10, 10, 0.75);
-            backdrop-filter: blur(4px);
-            border: 1px solid #1a1a1a;
-            border-radius: 6px;
-            padding: 20px;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 13px;
-            color: #888888;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
             display: flex;
             flex-direction: column;
             gap: 10px;
-            min-height: 280px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 13px;
+            color: #555555;
+            margin-top: auto; /* Pushes the text toward the bottom */
+            background: transparent; /* No box outline */
+            border: none;
+            padding: 0;
+            box-shadow: none;
         }
 
         .terminal-header {
-            color: #555555;
-            border-bottom: 1px dashed #222222;
-            padding-bottom: 8px;
+            color: #333333;
             font-weight: bold;
             display: flex;
             justify-content: space-between;
+            padding-bottom: 5px;
         }
 
         .terminal-logs {
-            flex-grow: 1;
             display: flex;
             flex-direction: column;
             gap: 6px;
-            overflow: hidden;
         }
 
         .log-line {
             white-space: pre-wrap;
             opacity: 0;
-            transform: translateY(5px);
+            transform: translateY(3px);
             animation: lineFadeIn 0.3s forwards ease;
         }
 
@@ -156,44 +147,22 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .log-accent { color: #ffffff; }
-        .log-success { color: #00ff66; text-shadow: 0 0 6px rgba(0,255,102,0.2); }
-        .log-warn { color: #ffaa00; }
+        .log-accent { color: #888888; }
+        .log-success { color: #009944; }
+        .log-warn { color: #aa7700; }
 
-        /* RESPONSIVE AUDIO WAVE VISUALIZER BAR GRAPH */
+        /* LIVE CANVAS AUDIO VISUALIZER WAVE */
         .visualizer-container {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            height: 35px;
             width: 100%;
-            padding-top: 10px;
-            border-top: 1px dashed #222222;
-            margin-top: auto;
+            height: 60px; /* Taller area for clean waves */
+            margin-top: 15px;
+            display: block;
         }
-
-        .v-bar {
-            width: 4%;
-            height: 3px;
-            background-color: #222222;
-            border-radius: 1px;
-            transition: height 0.1s ease, background-color 0.3s ease;
-        }
-
-        body.activated .v-bar {
-            background-color: #00ff66;
-            box-shadow: 0 0 8px rgba(0, 255, 102, 0.3);
-        }
-
-        /* Mobile responsive stacking reset overrides */
-        @media (max-width: 768px) {
-            .main-layout {
-                flex-direction: column;
-                align-items: center;
-                gap: 50px;
-            }
-            .icon-stack { width: 100%; }
-            .terminal-box { max-width: 100%; }
+        
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
         audio { display: none; }
@@ -201,10 +170,9 @@
 </head>
 <body>
 
-    <!-- Main Side-By-Side Framework Container -->
     <div class="main-layout">
 
-        <!-- Left Column: Navigation Stack -->
+        <!-- Top: Navigation Stack -->
         <div class="icon-stack">
             <!-- DISCORD -->
             <div class="social-row" id="discord-btn" title="Click to copy username">
@@ -225,33 +193,28 @@
             </a>
         </div>
 
-        <!-- Right Column: Interactive Core Terminal System -->
+        <!-- Towards the Bottom: Borderless Terminal System -->
         <div class="terminal-box">
             <div class="terminal-header">
-                <span>SYS_LOG // TERMINAL</span>
+                <span>SYS_LOG // MAIN</span>
                 <span class="log-success">ONLINE</span>
             </div>
             
-            <!-- Target logs wrapper injected dynamically by JS events -->
             <div class="terminal-logs" id="terminal-logs-box">
-                <div class="log-line">> System initialized. Awaiting user verification...</div>
-                <div class="log-line log-warn">> [TAP SCREEN TO INITIALIZE CONTENT INTERACTION]</div>
+                <div class="log-line">> System initialized. Awaiting confirmation...</div>
+                <div class="log-line log-warn">> [TAP SCREEN TO INITIALIZE AUDIO ENGINE]</div>
             </div>
 
-            <!-- Graphic Audio Spectrum bars inside terminal base layout -->
-            <div class="visualizer-container" id="visualizer">
-                <!-- Generating 16 baseline bars dynamically for the audio waves -->
-                <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-                <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-                <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-                <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+            <!-- Canvas render target for actual reactive audio tracking waves -->
+            <div class="visualizer-container">
+                <canvas id="visualizer-canvas"></canvas>
             </div>
         </div>
 
     </div>
 
     <!-- Background Audio Engine -->
-    <audio id="bg-audio" autoplay loop>
+    <audio id="bg-audio" autoplay loop crossorigin="anonymous">
         <source src="ACIDTEKK%20(Slowed).mp3" type="audio/mpeg">
     </audio>
 
@@ -259,32 +222,77 @@
         const audio = document.getElementById('bg-audio');
         const body = document.body;
         const logsBox = document.getElementById('terminal-logs-box');
-        const bars = document.querySelectorAll('.v-bar');
+        
+        const canvas = document.getElementById('visualizer-canvas');
+        const canvasCtx = canvas.getContext('2d');
 
         const discordUsername = "dextermogger0746";
+        let audioContext, analyser, source, dataArray, bufferLength;
+        let isInitialized = false;
 
-        // Helper framework script to handle scrolling terminal strings
         function addLog(text, className = '') {
             const line = document.createElement('div');
             line.className = `log-line ${className}`;
             line.innerHTML = `> ${text}`;
             logsBox.appendChild(line);
-            
-            // Auto scrolls content container securely down to follow prints
-            logsBox.scrollTop = logsBox.scrollHeight;
+        }
+
+        // Setup real web audio API connection tracking
+        function setupAudioAnalysis() {
+            if (isInitialized) return;
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                source = audioContext.createMediaElementSource(audio);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+                
+                analyser.fftSize = 64; // Fast rendering size
+                bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+                
+                // Set canvas internal scale properties accurately
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                
+                isInitialized = true;
+                drawVisualizer();
+            } catch (e) {
+                console.log("Audio analysis engine failed init context", e);
+            }
         }
 
         function activatePage() {
             if (!body.classList.contains('activated')) {
                 body.classList.add('activated');
+                setupAudioAnalysis();
                 
-                // Triggers clean audio systems logging stream sequence layout details
-                setTimeout(() => addLog("Access granted. Initializing network data layers...", "log-accent"), 200);
-                setTimeout(() => addLog("Loading track asset: ACIDTEKK (Slowed).mp3...", "log-accent"), 700);
+                setTimeout(() => addLog("Access verified. Initializing system...", "log-accent"), 200);
+                setTimeout(() => addLog("Loading asset: ACIDTEKK (Slowed).mp3...", "log-accent"), 600);
                 
                 audio.play().then(() => {
-                    setTimeout(() => addLog("Playback active: ACIDTEKK Engine loaded successfully.", "log-success"), 1300);
-                    startVisualizerLoop();
+                    setTimeout(() => addLog("Playback active: ACIDTEKK stream processing.", "log-success"), 1100);
                 }).catch(() => {
-                    setTimeout(() => addLog("Audio playback muted by browser security hooks.", "log-warn"), 1300);
+                    setTimeout(() => addLog("Playback blocked by security constraints.", "log-warn"), 1100);
                 });
+            } else {
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                if (audio.paused) audio.play();
+            }
+        }
+
+        // Live frame renderer algorithm making green bars step to the music frequencies
+        function drawVisualizer() {
+            requestAnimationFrame(drawVisualizer);
+            if (!isInitialized) return;
+
+            analyser.getByteFrequencyData(dataArray);
+            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const barWidth = (canvas.width / bufferLength) * 1.4;
+            let barHeight;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
