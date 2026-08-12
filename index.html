@@ -38,7 +38,7 @@
             pointer-events: none;
         }
         
-        /* Master alignment layout bounds */
+        /* Master layout boundaries */
         .main-layout {
             width: 100%;
             max-width: 800px;
@@ -50,20 +50,20 @@
             min-height: 85vh;
         }
 
-        /* Left-aligned vertical stack navigation panel */
+        /* Hard locks navigation links to the left side wall */
         .icon-stack {
             display: flex;
             flex-direction: column;
             gap: 45px;
             width: 100%;
-            align-items: flex-start; /* Hard lock to the left */
+            align-items: flex-start;
         }
 
-        /* The row structure containing icon + text */
+        /* Clicking the row will slide it smoothly left to right */
         .social-row {
             display: flex;
             align-items: center;
-            justify-content: center; /* Initial center deployment space */
+            justify-content: center; /* Initially centered */
             width: 100%;
             text-decoration: none;
             transition: transform 0.25s ease;
@@ -73,10 +73,17 @@
             transform: scale(1.05);
         }
 
+        /* HARDTEKK SPIN LINK ANIMATION IMPLEMENTATION */
         .custom-icon {
             width: 55px;
             height: auto;
             display: block;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Spinning animation toggle class handled by event routing */
+        .social-row.clicked-spinning .custom-icon {
+            transform: rotate(360deg) scale(1.2);
         }
 
         .social-text {
@@ -93,7 +100,7 @@
             transition: opacity 0.6s ease 0.2s, margin-left 0.5s cubic-bezier(0.25, 1, 0.5, 1), width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* SCREEN ACTIVATION FLIGHT ACTION: Forces blocks hard left */
+        /* ON REVEAL FLIGHT EFFECTS: Locks items all the way to the far left wall */
         body.activated .social-row {
             justify-content: flex-start;
         }
@@ -109,7 +116,7 @@
             text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
         }
 
-        /* TRUE AUDIO SPECTRUM CONTAINER LAYOUT */
+        /* NATIVE EQUALIZER FREQUENCY LAYOUT FOOTPRINT */
         .visualizer-wrapper {
             width: 100%;
             height: 60px;
@@ -140,28 +147,28 @@
 
     <div class="main-layout">
 
-        <!-- Social Profile Elements Stack -->
+        <!-- Left aligned content blocks stacking zone -->
         <div class="icon-stack">
-            <!-- DISCORD -->
+            <!-- DISCORD BUTTON -->
             <div class="social-row" id="discord-btn" title="Click to copy username">
                 <img src="image-removebg-preview.png" alt="Discord" class="custom-icon">
                 <span class="social-text" id="discord-text">Discord</span>
             </div>
 
-            <!-- INSTAGRAM -->
-            <a href="https://instagram.com" target="_blank" class="social-row" title="Instagram">
+            <!-- INSTAGRAM REDIRECT LINK -->
+            <div class="social-row" id="insta-btn" title="Instagram">
                 <img src="image-removebg-preview%20(1).png" alt="Instagram" class="custom-icon">
                 <span class="social-text">Instagram</span>
-            </a>
+            </div>
 
-            <!-- ROBLOX -->
-            <a href="https://roblox.com" target="_blank" class="social-row" title="Roblox">
+            <!-- ROBLOX REDIRECT LINK -->
+            <div class="social-row" id="roblox-btn" title="Roblox">
                 <img src="image-removebg-preview%20(2).png" alt="Roblox" class="custom-icon">
                 <span class="social-text">Roblox</span>
-            </a>
+            </div>
         </div>
 
-        <!-- Dynamic Frequency Spectrum Graph Elements (24 target frequency channels) -->
+        <!-- High frequency audio response nodes (24 spectrum analyzer bars) -->
         <div class="visualizer-wrapper" id="visualizer-wave">
             <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
             <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
@@ -172,8 +179,7 @@
 
     </div>
 
-    <!-- Background Audio Node with Anonymous Cross-Origin Token Access Enabled -->
-    <audio id="bg-audio" autoplay loop crossorigin="anonymous">
+    <audio id="bg-audio" autoplay loop>
         <source src="ACIDTEKK%20(Slowed).mp3" type="audio/mpeg">
     </audio>
 
@@ -183,84 +189,93 @@
         const waveBars = document.querySelectorAll('.wave-bar');
 
         const discordUsername = "dextermogger0746";
-        let audioCtx = null;
-        let analyser = null;
-        let dataArray = null;
-        let useLiveAnalysis = false;
-
-        // Initialize the browser audio frequency processing graph on user click
-        function initAudioEngine() {
-            if (audioCtx) return;
-            try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioCtx.createAnalyser();
-                
-                // Route audio through analyzer node before outputting to speakers
-                const source = audioCtx.createMediaElementSource(audio);
-                source.connect(analyser);
-                analyser.connect(audioCtx.destination);
-                
-                analyser.fftSize = 64; // High response speed bin size configuration
-                const bufferLength = analyser.frequencyBinCount;
-                dataArray = new Uint8Array(bufferLength);
-                useLiveAnalysis = true;
-            } catch (err) {
-                console.log("Cross-Origin audio blocked. Initializing automatic rhythm emulator fallback layer.", err);
-                useLiveAnalysis = false; // Fallback to pulse engine if browser denies cloud decryption tokens
-            }
-        }
 
         function activatePage() {
             if (!body.classList.contains('activated')) {
                 body.classList.add('activated');
-                initAudioEngine();
-                renderLoop();
-            }
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
+                startHardtekkVisualizerLoop();
             }
             if (audio.paused) {
                 audio.play();
             }
         }
 
-        // Processing rendering loop optimized to update sync'd to hardware frame rates
-        function renderLoop() {
-            requestAnimationFrame(renderLoop);
-            
-            if (!body.classList.contains('activated') || audio.paused) {
-                waveBars.forEach(bar => bar.style.height = '3px');
-                return;
-            }
-
-            if (useLiveAnalysis && analyser) {
-                // Reads actual data metrics directly from the live playing mp3 file track binary stream
-                analyser.getByteFrequencyData(dataArray);
-                waveBars.forEach((bar, i) => {
-                    const dataIndex = i % dataArray.length;
-                    // Low frequencies (Bass) are loaded at indices 0-4, hitting perfectly on Hardtekk kicks
-                    let rawValue = dataArray[dataIndex];
-                    
-                    // Boost bass bars height sensitivity mapping multiplier parameters
-                    if (dataIndex < 4) rawValue *= 1.3; 
-                    
-                    let targetHeight = Math.max(3, (rawValue / 255) * 55);
-                    bar.style.height = `${targetHeight}px`;
-                });
-            } else {
-                // Precision mathematical beat sync backup engine tracking 160BPM Hardtekk pulses
-                const time = Date.now() * 0.016; // Time metric variable
-                waveBars.forEach((bar, index) => {
-                    let baseWave = Math.sin(time * 0.8 + index * 0.4) * 12;
-                    let tekkKickBeat = (Math.sin(time * 1.6) > 0.7) ? Math.random() * 30 : 0;
-                    let calculatedHeight = Math.max(3, Math.abs(baseWave) + tekkKickBeat);
-                    bar.style.height = `${calculatedHeight}px`;
-                });
-            }
+        // High precision 160BPM Hardtekk processing equalizer script logic
+        let visInterval;
+        function startHardtekkVisualizerLoop() {
+            if (visInterval) return;
+            visInterval = setInterval(() => {
+                if (!audio.paused) {
+                    waveBars.forEach((bar, index) => {
+                        // Simulates high intensity speed kicks synchronized to rhythmic timing scales
+                        let timeScale = Date.now() * 0.015;
+                        let baseBass = Math.sin(timeScale + index * 0.5) * 15;
+                        
+                        // Hard sub bass transient thump emulation
+                        let hardtekkKick = (Math.sin(timeScale * 1.5) > 0.6) ? Math.floor(Math.random() * 38) + 10 : 0;
+                        
+                        let targetHeight = Math.max(3, Math.abs(baseBass) + hardtekkKick);
+                        bar.style.height = `${targetHeight}px`;
+                    });
+                } else {
+                    waveBars.forEach(bar => bar.style.height = '3px');
+                }
+            }, 65); // Hyper responsive updating frame speed metric
         }
 
         audio.play().then(() => {
             body.classList.add('activated');
-            initAudioEngine();
-            renderLoop();
+            startHardtekkVisualizerLoop();
         }).catch(() => {
+            console.log("Awaiting system interaction parameter validation checks.");
+        });
+
+        body.addEventListener('click', activatePage);
+
+        // NAVIGATION BUTTON ACTIONS TIMELINE MANAGEMENT
+
+        // DISCORD BUTTON EVENTS
+        const discordBtn = document.getElementById('discord-btn');
+        const discordText = document.getElementById('discord-text');
+
+        discordBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            activatePage();
+            
+            discordBtn.classList.add('clicked-spinning');
+            navigator.clipboard.writeText(discordUsername);
+
+            setTimeout(() => {
+                discordText.textContent = "Copied!";
+                discordText.classList.add('copied-flash');
+            }, 300);
+
+            setTimeout(() => {
+                discordText.textContent = "Discord";
+                discordText.classList.remove('copied-flash');
+                discordBtn.classList.remove('clicked-spinning');
+            }, 2000);
+        });
+
+        // INSTAGRAM BUTTON TIMEOUT ROUTING
+        const instaBtn = document.getElementById('insta-btn');
+        instaBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            activatePage();
+            
+            instaBtn.classList.add('clicked-spinning');
+            
+            // Pauses processing workflow briefly so the visitor physically watches the icon rotate completely
+            setTimeout(() => {
+                instaBtn.classList.remove('clicked-spinning');
+                window.open("https://instagram.com", "_blank");
+            }, 600);
+        });
+
+        // ROBLOX BUTTON TIMEOUT ROUTING
+        const robloxBtn = document.getElementById('roblox-btn');
+        robloxBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            activatePage();
+            
+
