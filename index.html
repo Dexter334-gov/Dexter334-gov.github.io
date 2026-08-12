@@ -11,9 +11,7 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #000000; /* Pitch black matches the banner perfectly */
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000000; /* Pitch black matches your banner */
             width: 100vw;
             min-height: 100vh;
             cursor: pointer;
@@ -23,69 +21,53 @@
             align-items: center;
         }
         
-        /* Container that fixes the image safely at the top */
+        /* Top Header Banner styling */
         .banner-container {
             width: 100%;
             display: flex;
             justify-content: center; 
             background-color: #000000;
         }
-
         .banner-img {
             width: 100%;
-            max-width: 800px;  /* Keeps the image slightly smaller so links fit beautifully below */
-            height: auto;       /* Keeps original crisp proportions */
+            max-width: 800px;
+            height: auto;
             display: block;
         }
 
-        /* Content area below Neo */
-        .content-container {
+        /* Container for the vertical stack of custom image icons */
+        .icon-stack {
             width: 100%;
             max-width: 400px;
-            padding: 20px;
-            text-align: center;
-            margin-top: -10px; /* Seamlessly pulls content close to the image wrap */
-        }
-
-        h1 {
-            font-size: 24px;
-            margin-bottom: 6px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        p {
-            font-size: 14px;
-            color: #888888;
-            margin-bottom: 25px;
-        }
-
-        /* Modern, minimal social button stack */
-        .links-stack {
+            padding: 50px 20px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            align-items: center;
+            gap: 45px; /* Spacing between your icons */
         }
 
-        .social-button {
-            display: block;
-            padding: 14px;
-            background: #111111;
-            color: #ffffff;
+        /* Style for the clickable icon image wrapper */
+        .icon-link {
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 15px;
-            border: 1px solid #222222;
-            transition: all 0.2s ease;
+            transition: transform 0.25s ease, filter 0.25s ease;
+            display: inline-block;
         }
 
-        /* Interactive highlight effect when hovering or tapping buttons */
-        .social-button:hover {
-            background: #ffffff;
-            color: #000000;
-            border-color: #ffffff;
-            transform: translateY(-2px);
+        /* Custom image dimension constraints */
+        .custom-icon {
+            width: 55px;  /* Clean size for readability */
+            height: auto;
+            display: block;
+        }
+
+        /* Hover action: smooth scaling bounce */
+        .icon-link:hover {
+            transform: scale(1.15);
+        }
+        
+        /* Adds a neat dark aesthetic brightness pop when hovered */
+        .icon-link:active {
+            transform: scale(0.95);
         }
 
         audio {
@@ -100,33 +82,36 @@
         <img src="ChatGPT%20Image%20Aug%2012,%202026,%2003_37_01%20AM.png" alt="Neo Banner" class="banner-img">
     </div>
 
-    <!-- Main Content Underneath the Image -->
-    <div class="content-container">
-        <h1>@Dexter334-gov</h1>
-        <p>Click anywhere to activate audio track</p>
-        
-        <!-- Social Profiles Box -->
-        <div class="links-stack">
-            <!-- CHANGE THE LINKS BELOW TO YOUR REAL PROFILE PATHS -->
-            <a href="https://instagram.com" target="_blank" class="social-button">Instagram</a>
-            <a href="https://discord.com" target="_blank" class="social-button">Discord</a>
-            <a href="https://tiktok.com" target="_blank" class="social-button">TikTok</a>
-            <a href="https://youtube.com" target="_blank" class="social-button">YouTube</a>
-        </div>
+    <!-- Clickable Custom Image Icons Stack -->
+    <div class="icon-stack">
+
+        <!-- DISCORD LINK -->
+        <a href="#" target="_blank" class="icon-link" title="Discord">
+            <img src="image-removebg-preview.png" alt="Discord" class="custom-icon">
+        </a>
+
+        <!-- INSTAGRAM LINK -->
+        <a href="#" target="_blank" class="icon-link" title="Instagram">
+            <img src="image-removebg-preview%20(1).png" alt="Instagram" class="custom-icon">
+        </a>
+
+        <!-- ROBLOX LINK -->
+        <a href="#" target="_blank" class="icon-link" title="Roblox">
+            <img src="image-removebg-preview%20(2).png" alt="Roblox" class="custom-icon">
+        </a>
+
     </div>
 
-    <!-- Hidden Audio File -->
+    <!-- Hidden Background Audio Player -->
     <audio id="bg-audio" autoplay loop>
         <source src="ACIDTEKK%20(Slowed).mp3" type="audio/mpeg">
     </audio>
 
     <script>
         const audio = document.getElementById('bg-audio');
-
         audio.play().catch(() => {
-            console.log("Browser blocked autoplay. Waiting for user to click the screen.");
+            console.log("Autoplay blocked. Awaiting screen click.");
         });
-
         document.body.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
