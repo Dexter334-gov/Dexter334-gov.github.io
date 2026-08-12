@@ -22,7 +22,7 @@
             position: relative;
         }
 
-        /* STATIC GRIT / TEXTURE OVERLAY (No moving waves) */
+        /* STATIC GRIT / TEXTURE OVERLAY */
         body::before {
             content: "";
             position: fixed;
@@ -33,15 +33,14 @@
             background-image: url('Airbrush-IMAGE-ENHANCER-1786522159771-1786522159771.jpg');
             background-size: cover;
             background-position: center;
-            opacity: 0.15; /* Fixed gritty distortion print */
+            opacity: 0.15;
             z-index: 1;
             pointer-events: none;
         }
         
-        /* Container spanning the entire width of the page */
         .icon-stack {
             width: 100%;
-            padding: 60px 40px; /* Controls how high the items sit from the top edge */
+            padding: 60px 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -50,29 +49,27 @@
             z-index: 2;
         }
 
-        /* The row structure containing icon + text */
+        /* Row structures */
         .social-row {
             display: flex;
             align-items: center;
-            justify-content: center; /* Starts perfectly centered */
+            justify-content: center;
             width: 100%;
             max-width: 800px; 
             text-decoration: none;
-            transition: transform 0.25s ease, justify-content 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.25s ease;
         }
         
         .social-row:hover {
             transform: scale(1.05);
         }
 
-        /* Custom image icon dimensions */
         .custom-icon {
             width: 55px;
             height: auto;
             display: block;
         }
 
-        /* Muted gray text formatting */
         .social-text {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             font-size: 20px;
@@ -87,15 +84,20 @@
             transition: opacity 0.6s ease 0.2s, margin-left 0.5s cubic-bezier(0.25, 1, 0.5, 1), width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* KICK OFF ACTIVATION: Forces icons all the way to the far left border */
         body.activated .social-row {
             justify-content: flex-start;
         }
 
         body.activated .social-text {
-            width: 150px;       
+            width: 180px;      
             margin-left: 20px;  
             opacity: 1;         
+        }
+
+        /* Green flash color when copied */
+        .social-text.copied-flash {
+            color: #00ff66 !important;
+            text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
         }
 
         audio {
@@ -105,30 +107,28 @@
 </head>
 <body>
 
-    <!-- Clickable Custom Image Rows (No top banner) -->
     <div class="icon-stack">
 
-        <!-- DISCORD BLOCK -->
-        <a href="#" target="_blank" class="social-row" title="Discord">
+        <!-- DISCORD ROW (Copies username on click) -->
+        <div class="social-row" id="discord-btn" title="Click to copy username">
             <img src="image-removebg-preview.png" alt="Discord" class="custom-icon">
-            <span class="social-text">Discord</span>
-        </a>
+            <span class="social-text" id="discord-text">Discord</span>
+        </div>
 
-        <!-- INSTAGRAM BLOCK -->
-        <a href="#" target="_blank" class="social-row" title="Instagram">
+        <!-- INSTAGRAM ROW -->
+        <a href="https://instagram.com" target="_blank" class="social-row" title="Instagram">
             <img src="image-removebg-preview%20(1).png" alt="Instagram" class="custom-icon">
             <span class="social-text">Instagram</span>
         </a>
 
-        <!-- ROBLOX BLOCK -->
-        <a href="#" target="_blank" class="social-row" title="Roblox">
+        <!-- ROBLOX ROW -->
+        <a href="https://roblox.com" target="_blank" class="social-row" title="Roblox">
             <img src="image-removebg-preview%20(2).png" alt="Roblox" class="custom-icon">
             <span class="social-text">Roblox</span>
         </a>
 
     </div>
 
-    <!-- Hidden Background Audio Player -->
     <audio id="bg-audio" autoplay loop>
         <source src="ACIDTEKK%20(Slowed).mp3" type="audio/mpeg">
     </audio>
@@ -136,6 +136,9 @@
     <script>
         const audio = document.getElementById('bg-audio');
         const body = document.body;
+
+        // Linked your precise profile username string here
+        const discordUsername = "dextermogger0746";
 
         function activatePage() {
             if (!body.classList.contains('activated')) {
@@ -149,10 +152,31 @@
         audio.play().then(() => {
             body.classList.add('activated');
         }).catch(() => {
-            console.log("Autoplay blocked. Waiting for visitor click.");
+            console.log("Autoplay blocked. Waiting for click.");
         });
 
         body.addEventListener('click', activatePage);
+
+        // CLIPBOARD COPY LOGIC FOR DISCORD
+        const discordBtn = document.getElementById('discord-btn');
+        const discordText = document.getElementById('discord-text');
+
+        discordBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            activatePage();
+
+            navigator.clipboard.writeText(discordUsername).then(() => {
+                discordText.textContent = "Copied!";
+                discordText.classList.add('copied-flash');
+
+                setTimeout(() => {
+                    discordText.textContent = "Discord";
+                    discordText.classList.remove('copied-flash');
+                }, 2000);
+            }).catch(err => {
+                console.error('Could not copy username: ', err);
+            });
+        });
     </script>
 
 </body>
