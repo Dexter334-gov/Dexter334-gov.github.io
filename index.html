@@ -38,24 +38,33 @@
             pointer-events: none;
         }
         
-        .icon-stack {
+        /* Master responsive grid layout split across desktop screens */
+        .main-layout {
             width: 100%;
+            max-width: 1000px;
             padding: 60px 40px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 45px;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
             position: relative;
             z-index: 2;
         }
 
-        /* Row structures */
+        /* Container for the left vertical stack of links */
+        .icon-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 45px;
+            flex: 1;
+        }
+
         .social-row {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 800px; 
             text-decoration: none;
             transition: transform 0.25s ease;
         }
@@ -89,46 +98,159 @@
         }
 
         body.activated .social-text {
-            width: 180px;      
+            width: 150px;      
             margin-left: 20px;  
             opacity: 1;         
         }
 
-        /* Green flash color when copied */
         .social-text.copied-flash {
             color: #00ff66 !important;
             text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
         }
 
-        audio {
-            display: none;
+        /* CYBER TERMINAL INTERACTIVE BOX STYLING */
+        .terminal-box {
+            flex: 1.2;
+            width: 100%;
+            max-width: 480px;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(4px);
+            border: 1px solid #1a1a1a;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 13px;
+            color: #888888;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 280px;
         }
+
+        .terminal-header {
+            color: #555555;
+            border-bottom: 1px dashed #222222;
+            padding-bottom: 8px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .terminal-logs {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow: hidden;
+        }
+
+        .log-line {
+            white-space: pre-wrap;
+            opacity: 0;
+            transform: translateY(5px);
+            animation: lineFadeIn 0.3s forwards ease;
+        }
+
+        @keyframes lineFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .log-accent { color: #ffffff; }
+        .log-success { color: #00ff66; text-shadow: 0 0 6px rgba(0,255,102,0.2); }
+        .log-warn { color: #ffaa00; }
+
+        /* RESPONSIVE AUDIO WAVE VISUALIZER BAR GRAPH */
+        .visualizer-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 35px;
+            width: 100%;
+            padding-top: 10px;
+            border-top: 1px dashed #222222;
+            margin-top: auto;
+        }
+
+        .v-bar {
+            width: 4%;
+            height: 3px;
+            background-color: #222222;
+            border-radius: 1px;
+            transition: height 0.1s ease, background-color 0.3s ease;
+        }
+
+        body.activated .v-bar {
+            background-color: #00ff66;
+            box-shadow: 0 0 8px rgba(0, 255, 102, 0.3);
+        }
+
+        /* Mobile responsive stacking reset overrides */
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+                gap: 50px;
+            }
+            .icon-stack { width: 100%; }
+            .terminal-box { max-width: 100%; }
+        }
+
+        audio { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="icon-stack">
+    <!-- Main Side-By-Side Framework Container -->
+    <div class="main-layout">
 
-        <!-- DISCORD ROW (Copies username on click) -->
-        <div class="social-row" id="discord-btn" title="Click to copy username">
-            <img src="image-removebg-preview.png" alt="Discord" class="custom-icon">
-            <span class="social-text" id="discord-text">Discord</span>
+        <!-- Left Column: Navigation Stack -->
+        <div class="icon-stack">
+            <!-- DISCORD -->
+            <div class="social-row" id="discord-btn" title="Click to copy username">
+                <img src="image-removebg-preview.png" alt="Discord" class="custom-icon">
+                <span class="social-text" id="discord-text">Discord</span>
+            </div>
+
+            <!-- INSTAGRAM -->
+            <a href="https://instagram.com" target="_blank" class="social-row" id="insta-btn" title="Instagram">
+                <img src="image-removebg-preview%20(1).png" alt="Instagram" class="custom-icon">
+                <span class="social-text">Instagram</span>
+            </a>
+
+            <!-- ROBLOX -->
+            <a href="https://roblox.com" target="_blank" class="social-row" id="roblox-btn" title="Roblox">
+                <img src="image-removebg-preview%20(2).png" alt="Roblox" class="custom-icon">
+                <span class="social-text">Roblox</span>
+            </a>
         </div>
 
-        <!-- INSTAGRAM ROW -->
-        <a href="https://instagram.com" target="_blank" class="social-row" title="Instagram">
-            <img src="image-removebg-preview%20(1).png" alt="Instagram" class="custom-icon">
-            <span class="social-text">Instagram</span>
-        </a>
+        <!-- Right Column: Interactive Core Terminal System -->
+        <div class="terminal-box">
+            <div class="terminal-header">
+                <span>SYS_LOG // TERMINAL</span>
+                <span class="log-success">ONLINE</span>
+            </div>
+            
+            <!-- Target logs wrapper injected dynamically by JS events -->
+            <div class="terminal-logs" id="terminal-logs-box">
+                <div class="log-line">> System initialized. Awaiting user verification...</div>
+                <div class="log-line log-warn">> [TAP SCREEN TO INITIALIZE CONTENT INTERACTION]</div>
+            </div>
 
-        <!-- ROBLOX ROW -->
-        <a href="https://roblox.com" target="_blank" class="social-row" title="Roblox">
-            <img src="image-removebg-preview%20(2).png" alt="Roblox" class="custom-icon">
-            <span class="social-text">Roblox</span>
-        </a>
+            <!-- Graphic Audio Spectrum bars inside terminal base layout -->
+            <div class="visualizer-container" id="visualizer">
+                <!-- Generating 16 baseline bars dynamically for the audio waves -->
+                <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+            </div>
+        </div>
 
     </div>
 
+    <!-- Background Audio Engine -->
     <audio id="bg-audio" autoplay loop>
         <source src="ACIDTEKK%20(Slowed).mp3" type="audio/mpeg">
     </audio>
@@ -136,48 +258,33 @@
     <script>
         const audio = document.getElementById('bg-audio');
         const body = document.body;
+        const logsBox = document.getElementById('terminal-logs-box');
+        const bars = document.querySelectorAll('.v-bar');
 
-        // Linked your precise profile username string here
         const discordUsername = "dextermogger0746";
+
+        // Helper framework script to handle scrolling terminal strings
+        function addLog(text, className = '') {
+            const line = document.createElement('div');
+            line.className = `log-line ${className}`;
+            line.innerHTML = `> ${text}`;
+            logsBox.appendChild(line);
+            
+            // Auto scrolls content container securely down to follow prints
+            logsBox.scrollTop = logsBox.scrollHeight;
+        }
 
         function activatePage() {
             if (!body.classList.contains('activated')) {
                 body.classList.add('activated');
-            }
-            if (audio.paused) {
-                audio.play();
-            }
-        }
-
-        audio.play().then(() => {
-            body.classList.add('activated');
-        }).catch(() => {
-            console.log("Autoplay blocked. Waiting for click.");
-        });
-
-        body.addEventListener('click', activatePage);
-
-        // CLIPBOARD COPY LOGIC FOR DISCORD
-        const discordBtn = document.getElementById('discord-btn');
-        const discordText = document.getElementById('discord-text');
-
-        discordBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            activatePage();
-
-            navigator.clipboard.writeText(discordUsername).then(() => {
-                discordText.textContent = "Copied!";
-                discordText.classList.add('copied-flash');
-
-                setTimeout(() => {
-                    discordText.textContent = "Discord";
-                    discordText.classList.remove('copied-flash');
-                }, 2000);
-            }).catch(err => {
-                console.error('Could not copy username: ', err);
-            });
-        });
-    </script>
-
-</body>
-</html>
+                
+                // Triggers clean audio systems logging stream sequence layout details
+                setTimeout(() => addLog("Access granted. Initializing network data layers...", "log-accent"), 200);
+                setTimeout(() => addLog("Loading track asset: ACIDTEKK (Slowed).mp3...", "log-accent"), 700);
+                
+                audio.play().then(() => {
+                    setTimeout(() => addLog("Playback active: ACIDTEKK Engine loaded successfully.", "log-success"), 1300);
+                    startVisualizerLoop();
+                }).catch(() => {
+                    setTimeout(() => addLog("Audio playback muted by browser security hooks.", "log-warn"), 1300);
+                });
