@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #000000; /* Pitch black matches your banner */
+            background-color: #000000;
             width: 100vw;
             min-height: 100vh;
             cursor: pointer;
@@ -19,6 +19,37 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+        }
+
+        /* HARDTEKK DISTORTION OVERLAY */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -50px;
+            left: -50px;
+            right: -50px;
+            bottom: -50px;
+            background-image: url('Airbrush-IMAGE-ENHANCER-1786522159771-1786522159771.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.12; /* Muted texture depth so it stays dark and gritty */
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Glitch distortion loop animation triggered on page click */
+        body.activated::before {
+            animation: tekkGlitch 0.25s infinite linear;
+        }
+
+        @keyframes tekkGlitch {
+            0% { transform: translate(0, 0) skewX(0deg); filter: contrast(100%); }
+            20% { transform: translate(-5px, 3px) skewX(2deg); filter: contrast(150%); }
+            40% { transform: translate(4px, -2px) skewX(-1deg); }
+            60% { transform: translate(-3px, -4px) opacity: 0.18; }
+            80% { transform: translate(5px, 5px) skewX(1deg); filter: contrast(120%); }
+            100% { transform: translate(0, 0) skewX(0deg); }
         }
         
         /* Top Header Banner styling */
@@ -27,6 +58,8 @@
             display: flex;
             justify-content: center; 
             background-color: #000000;
+            position: relative;
+            z-index: 2;
         }
         .banner-img {
             width: 100%;
@@ -35,65 +68,64 @@
             display: block;
         }
 
-        /* Container for the vertical stack of links */
+        /* Container spanning the entire width of the page */
         .icon-stack {
             width: 100%;
-            max-width: 400px;
-            padding: 50px 20px;
+            padding: 50px 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 45px; /* Spacing between rows */
+            gap: 45px;
+            position: relative;
+            z-index: 2;
         }
 
         /* The row structure containing icon + text */
         .social-row {
             display: flex;
             align-items: center;
-            justify-content: center; /* Initially centered */
+            justify-content: center; /* Starts perfectly centered */
             width: 100%;
+            max-width: 800px; /* Aligns comfortably with the Neo banner borders */
             text-decoration: none;
-            transition: transform 0.25s ease;
+            transition: transform 0.25s ease, justify-content 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
         
-        /* Subtle pop animation on hover */
         .social-row:hover {
             transform: scale(1.05);
         }
 
-        /* Custom image dimension constraints */
+        /* Custom image icon dimensions */
         .custom-icon {
             width: 55px;
             height: auto;
             display: block;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Clean dark-themed text formatting */
+        /* Muted gray text formatting */
         .social-text {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             font-size: 20px;
             font-weight: 600;
             letter-spacing: 1px;
-            color: #444444; /* Dark grayish-matte tone that is readable but matches the dark theme */
+            color: #444444; 
             margin-left: 0;
             opacity: 0;
             width: 0;
             overflow: hidden;
             white-space: nowrap;
-            transition: opacity 0.8s ease 0.2s, margin-left 0.6s cubic-bezier(0.25, 1, 0.5, 1), width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: opacity 0.6s ease 0.2s, margin-left 0.5s cubic-bezier(0.25, 1, 0.5, 1), width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Trigger state when the user clicks the page */
+        /* KICK OFF ACTIVATION: Forces icons all the way to the far left border */
         body.activated .social-row {
-            justify-content: flex-start; /* Shifts content alignment to the left side */
-            padding-left: 90px;          /* Perfectly centers the newly expanded row block */
+            justify-content: flex-start;
         }
 
         body.activated .social-text {
-            width: 150px;       /* Gives room for text to expand into */
-            margin-left: 20px;  /* Spacing between the icon and text */
-            opacity: 1;         /* Fades the words seamlessly into view */
+            width: 150px;       
+            margin-left: 20px;  
+            opacity: 1;         
         }
 
         audio {
@@ -140,30 +172,25 @@
         const audio = document.getElementById('bg-audio');
         const body = document.body;
 
-        // Central activation function for audio and animations
         function activatePage() {
-            // Adds the CSS activation class to kick off the sliding/fading styles
             if (!body.classList.contains('activated')) {
                 body.classList.add('activated');
             }
-            
-            // Fires up the music track smoothly
             if (audio.paused) {
                 audio.play();
             }
         }
 
-        // Standard auto-load check
         audio.play().then(() => {
             body.classList.add('activated');
         }).catch(() => {
             console.log("Autoplay blocked. Waiting for visitor click.");
         });
 
-        // Triggers the animation state structural shift when clicking anywhere
         body.addEventListener('click', activatePage);
     </script>
 
 </body>
 </html>
+
 
