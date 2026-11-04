@@ -20,7 +20,24 @@
             flex-direction: column;
             align-items: center;
             position: relative;
-        } 
+        }
+
+        /* STATIC GRIT BACKGROUND TEXTURE */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('aglenog_1792454738_4011723547857942387_69511326324.webp');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
         /* Layout Boundary Container */
         .main-layout {
             width: 100%;
@@ -234,24 +251,38 @@
             }, 300);
 
             setTimeout(() => {
-                discordBtn.classList.remove('clicked-spinning');
                 discordText.textContent = "Discord";
                 discordText.classList.remove('copied-flash');
-            }, 2300);
+                discordBtn.classList.remove('clicked-spinning');
+            }, 2000);
         });
 
-        // INSTAGRAM ROUTING
-        document.getElementById('insta-btn').addEventListener('click', (e) => {
+        // INSTAGRAM ROUTER
+        const instaBtn = document.getElementById('insta-btn');
+        instaBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             activatePage();
-            window.open('https://instagram.com', '_blank'); 
+            
+            instaBtn.classList.add('clicked-spinning');
+            
+            setTimeout(() => {
+                instaBtn.classList.remove('clicked-spinning');
+                window.open("https://instagram.com", "_blank");
+            }, 600);
         });
 
-        // ROBLOX ROUTING
-        document.getElementById('roblox-btn').addEventListener('click', (e) => {
+        // ROBLOX ROUTER
+        const robloxBtn = document.getElementById('roblox-btn');
+        robloxBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             activatePage();
-            window.open('https://roblox.com', '_blank'); 
+            
+            robloxBtn.classList.add('clicked-spinning');
+            
+            setTimeout(() => {
+                robloxBtn.classList.remove('clicked-spinning');
+                window.open("https://roblox.com", "_blank");
+            }, 600);
         });
     </script>
 </body>
